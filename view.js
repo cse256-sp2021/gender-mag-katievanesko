@@ -2,9 +2,12 @@
 var efPanel = define_new_effective_permissions("efPan",true);
 $('#sidepanel').append(efPanel);
 
-var newUser = define_new_user_select_field("s_user", "select a user", on_user_change = function(selected_user){$('#efPan').attr('username', selected_user)});
+var newUser = define_new_user_select_field("s_user", "select a user", on_user_change = function(selected_user){
+    $('#efPan').attr('username', selected_user)
+});
 $('#sidepanel').append(newUser);
-$('#efPan').attr('filepath', '/C/presentation_documents/important_file.txt');
+$('#efPan').attr('filepath', '/C/Lecture_Notes/Lecture4.txt'); //currently hard-coded should use variable instead!!!!
+
 
 
 var newDialogue = define_new_dialog("newD", title='', options = {})
