@@ -1,5 +1,6 @@
 // Configuration
-show_starter_dialogs = true // set this to "false" to disable the survey and 3-minute timer. Set to "true" before submitting to MTurk!!
+// show_starter_dialogs = true // set this to "false" to disable the survey and 3-minute timer. Set to "true" before submitting to MTurk!!
+show_starter_dialogs = false // set this to "false" to disable the survey and 3-minute timer. Set to "true" before submitting to MTurk!!
 
 // ---- Set up main Permissions dialog ----
 

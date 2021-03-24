@@ -503,13 +503,20 @@ function define_new_user_select_field(id_prefix, select_button_text, on_user_cha
 
 // Get a (very simple) text representation of a permissions explanation
 function get_explanation_text(explanation) {
-    return `
-    Action allowed?: ${explanation.is_allowed}; 
-    Because of
+    console.log(explanation)
+    // return `
+    // Action allowed?: ${explanation.is_allowed}; 
+    // Because of
+    // permission set for file: ${explanation.file_responsible?get_full_path(explanation.file_responsible):'N/A'}
+    // and for user: ${ explanation.ace_responsible ? get_user_name(explanation.ace_responsible.who) : 'N/A' }
+    // ${ explanation.text_explanation ? `(${explanation.text_explanation})`  : '' }
+    // `
+    let allowed = "Action Alllowed?: " + explanation.is_allowed + "\n Because...";
+    let why = ` Because of
     permission set for file: ${explanation.file_responsible?get_full_path(explanation.file_responsible):'N/A'}
     and for user: ${ explanation.ace_responsible ? get_user_name(explanation.ace_responsible.who) : 'N/A' }
-    ${ explanation.text_explanation ? `(${explanation.text_explanation})`  : '' }
-    `
+    ${ explanation.text_explanation ? `(${explanation.text_explanation})`  : '' }`
+    return allowed +  why;
 }
 
 //---- some universal HTML set-up so you don't have to do it in each wrapper.html ----

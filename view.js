@@ -1,4 +1,37 @@
 // ---- Define your dialogs  and panels here ----
+var efPanel = define_new_effective_permissions("efPan",true);
+$('#sidepanel').append(efPanel);
+
+var newUser = define_new_user_select_field("s_user", "select a user", on_user_change = function(selected_user){$('#efPan').attr('username', selected_user)});
+$('#sidepanel').append(newUser);
+$('#efPan').attr('filepath', '/C/presentation_documents/important_file.txt');
+
+
+var newDialogue = define_new_dialog("newD", title='', options = {})
+$('.perm_info').click(function(){
+    $('#newD').dialog("open");
+    let file_name = $('#efPan').attr('filepath');
+    let user_name = $('#efPan').attr('username');
+    let permission_name = $(this).attr('permission_name');
+    console.log(file_name ," , ", user_name," , ", permission_name);
+
+    var my_file_obj_var = path_to_file[file_name];
+    console.log(my_file_obj_var);
+    var my_user_obj_var = all_users[user_name];
+    console.log(all_users)
+    console.log(my_user_obj_var);
+
+    let explanation = allow_user_action(my_file_obj_var, my_user_obj_var, permission_name);
+    console.log(explanation)
+    let explanation_text = get_explanation_text(explanation);
+
+    $('#newD').text(explanation_text);
+    $('#newD').dialog({
+        closeText: "OK"
+      });
+})
+
+
 
 
 
