@@ -1,14 +1,25 @@
 // ---- Define your dialogs  and panels here ----
+
 var efPanel = define_new_effective_permissions("efPan",true);
 $('#sidepanel').append(efPanel);
+
+
+// $('#efPan').attr('filepath', '/C/Lecture_Notes/Lecture4.txt'); //currently hard-coded should use variable instead!!!!
+var selected_file= "";
+console.log(window.location.href)
+const task = window.location.href;
+const newDiv = document.createElement("div");
+var viewing_file_text = `Select a user to view thier permissions for ${selected_file}`;
+
+const newContent = document.createTextNode(viewing_file_text);
+newDiv.appendChild(newContent);
+newDiv.classList.add("imp-text");
+$('#sidepanel').append(newDiv);
 
 var newUser = define_new_user_select_field("s_user", "select a user", on_user_change = function(selected_user){
     $('#efPan').attr('username', selected_user)
 });
 $('#sidepanel').append(newUser);
-$('#efPan').attr('filepath', '/C/Lecture_Notes/Lecture4.txt'); //currently hard-coded should use variable instead!!!!
-
-
 
 var newDialogue = define_new_dialog("newD", title='', options = {})
 $('.perm_info').click(function(){
@@ -44,12 +55,21 @@ $('.perm_info').click(function(){
 function make_file_element(file_obj) {
     let file_hash = get_full_path(file_obj)
 
+    // if(file_obj.is_folder) {
+    //     let folder_elem = $(`<div class='folder' id="${file_hash}_div">
+    //         <h3 id="${file_hash}_header">
+    //             <span class="oi oi-folder" id="${file_hash}_icon"/> ${file_obj.filename} 
+    //             <button class="ui-button ui-widget ui-corner-all permbutton" path="${file_hash}" id="${file_hash}_permbutton"> 
+    //                 <span class="oi oi-lock-unlocked" id="${file_hash}_permicon"/> 
+    //             </button>
+    //         </h3>
+    //     </div>`)
     if(file_obj.is_folder) {
         let folder_elem = $(`<div class='folder' id="${file_hash}_div">
             <h3 id="${file_hash}_header">
                 <span class="oi oi-folder" id="${file_hash}_icon"/> ${file_obj.filename} 
                 <button class="ui-button ui-widget ui-corner-all permbutton" path="${file_hash}" id="${file_hash}_permbutton"> 
-                    <span class="oi oi-lock-unlocked" id="${file_hash}_permicon"/> 
+                    View Folder Permissions
                 </button>
             </h3>
         </div>`)
@@ -66,10 +86,16 @@ function make_file_element(file_obj) {
         return folder_elem
     }
     else {
+        // return $(`<div class='file'  id="${file_hash}_div">
+        //     <span class="oi oi-file" id="${file_hash}_icon"/> ${file_obj.filename}
+        //     <button class="ui-button ui-widget ui-corner-all permbutton" path="${file_hash}" id="${file_hash}_permbutton"> 
+        //         <span class="oi oi-lock-unlocked" id="${file_hash}_permicon"/> 
+        //     </button>
+        // </div>`)
         return $(`<div class='file'  id="${file_hash}_div">
             <span class="oi oi-file" id="${file_hash}_icon"/> ${file_obj.filename}
             <button class="ui-button ui-widget ui-corner-all permbutton" path="${file_hash}" id="${file_hash}_permbutton"> 
-                <span class="oi oi-lock-unlocked" id="${file_hash}_permicon"/> 
+                View File Permissions
             </button>
         </div>`)
     }
