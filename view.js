@@ -3,24 +3,46 @@
 var efPanel = define_new_effective_permissions("efPan",true);
 $('#sidepanel').append(efPanel);
 
+//create instructions div
+const instructions_div = document.createElement("div");
+var viewing_instructions = "Select a user and file or folder to view thier permissions";
+const instructions_text = document.createTextNode(viewing_instructions);
+instructions_div.appendChild(instructions_text);
+instructions_div.classList.add("imp-text");
+$('#sidepanel').append(instructions_div);
 
-// $('#efPan').attr('filepath', '/C/Lecture_Notes/Lecture4.txt'); //currently hard-coded should use variable instead!!!!
-var selected_file= "";
-console.log(window.location.href)
-const task = window.location.href;
-const newDiv = document.createElement("div");
-var viewing_file_text = `Select a user to view thier permissions for ${selected_file}`;
+//create disclaimer div
+const disclaimer_div = document.createElement("div");
+var viewing_instructions = "(if nothings appears, user most likely does not have permissions for selected file/folder)";
+const disclaimer_text = document.createTextNode(viewing_instructions);
+disclaimer_div.appendChild(disclaimer_text);
+$('#sidepanel').append(disclaimer_div);
 
-const newContent = document.createTextNode(viewing_file_text);
-newDiv.appendChild(newContent);
-newDiv.classList.add("imp-text");
-$('#sidepanel').append(newDiv);
+//create file selector
+var file_selector = ` <select name="files" id="file-select" onchange="updateFile(event)">`;
+for (var element in path_to_file) {
+    file_selector += `<option value="${element}">${element}</option>`;
+}
+file_selector += `</select>`;
+console.log(file_selector)
+$('#sidepanel').append(file_selector);
 
+//change filepath attribute on file selector change
+$('#efPan').attr('filepath', '/C');
+function updateFile(e) {            //update file/folder for side panel
+    console.log(e.target.value);
+    $('#efPan').attr('filepath', e.target.value); 
+}
+
+//select user for side panel
 var newUser = define_new_user_select_field("s_user", "select a user", on_user_change = function(selected_user){
     $('#efPan').attr('username', selected_user)
 });
 $('#sidepanel').append(newUser);
 
+
+
+//dialog box for info onclick
 var newDialogue = define_new_dialog("newD", title='', options = {})
 $('.perm_info').click(function(){
     $('#newD').dialog("open");
@@ -30,19 +52,25 @@ $('.perm_info').click(function(){
     console.log(file_name ," , ", user_name," , ", permission_name);
 
     var my_file_obj_var = path_to_file[file_name];
-    console.log(my_file_obj_var);
     var my_user_obj_var = all_users[user_name];
-    console.log(all_users)
-    console.log(my_user_obj_var);
 
-    let explanation = allow_user_action(my_file_obj_var, my_user_obj_var, permission_name);
-    console.log(explanation)
-    let explanation_text = get_explanation_text(explanation);
+    console.log(file_name == null);
+    console.log(user_name == null);
+    var explanation_text = "";
 
+    if (file_name == null || user_name == null) {
+        explanation_text = "Pick a File and User to view thier permissions.";
+        console.log("something null")
+    } else {
+        let explanation = allow_user_action(my_file_obj_var, my_user_obj_var, permission_name, true);
+        console.log(explanation)
+        explanation_text = get_explanation_text(explanation);
+    }
+    
     $('#newD').text(explanation_text);
     $('#newD').dialog({
         closeText: "OK"
-      });
+    });
 })
 
 
@@ -54,22 +82,12 @@ $('.perm_info').click(function(){
 // (recursively) makes and returns an html element (wrapped in a jquery object) for a given file object
 function make_file_element(file_obj) {
     let file_hash = get_full_path(file_obj)
-
-    // if(file_obj.is_folder) {
-    //     let folder_elem = $(`<div class='folder' id="${file_hash}_div">
-    //         <h3 id="${file_hash}_header">
-    //             <span class="oi oi-folder" id="${file_hash}_icon"/> ${file_obj.filename} 
-    //             <button class="ui-button ui-widget ui-corner-all permbutton" path="${file_hash}" id="${file_hash}_permbutton"> 
-    //                 <span class="oi oi-lock-unlocked" id="${file_hash}_permicon"/> 
-    //             </button>
-    //         </h3>
-    //     </div>`)
     if(file_obj.is_folder) {
         let folder_elem = $(`<div class='folder' id="${file_hash}_div">
             <h3 id="${file_hash}_header">
                 <span class="oi oi-folder" id="${file_hash}_icon"/> ${file_obj.filename} 
                 <button class="ui-button ui-widget ui-corner-all permbutton" path="${file_hash}" id="${file_hash}_permbutton"> 
-                    View Folder Permissions
+                <span class="oi oi-pencil" id="${file_hash}_permicon"/> 
                 </button>
             </h3>
         </div>`)
@@ -86,16 +104,10 @@ function make_file_element(file_obj) {
         return folder_elem
     }
     else {
-        // return $(`<div class='file'  id="${file_hash}_div">
-        //     <span class="oi oi-file" id="${file_hash}_icon"/> ${file_obj.filename}
-        //     <button class="ui-button ui-widget ui-corner-all permbutton" path="${file_hash}" id="${file_hash}_permbutton"> 
-        //         <span class="oi oi-lock-unlocked" id="${file_hash}_permicon"/> 
-        //     </button>
-        // </div>`)
         return $(`<div class='file'  id="${file_hash}_div">
             <span class="oi oi-file" id="${file_hash}_icon"/> ${file_obj.filename}
             <button class="ui-button ui-widget ui-corner-all permbutton" path="${file_hash}" id="${file_hash}_permbutton"> 
-                View File Permissions
+            <span class="oi oi-pencil" id="${file_hash}_permicon"/> 
             </button>
         </div>`)
     }
