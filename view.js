@@ -64,10 +64,10 @@ $('.perm_info').click(function(){
     } else {
         let explanation = allow_user_action(my_file_obj_var, my_user_obj_var, permission_name, true);
         console.log(explanation)
-        explanation_text = get_explanation_text(explanation);
+        explanation_text = get_explanation_text(explanation, user_name, file_name, permission_name);
     }
     
-    $('#newD').text(explanation_text);
+    $('#newD').html(explanation_text);
     $('#newD').dialog({
         closeText: "OK"
     });
