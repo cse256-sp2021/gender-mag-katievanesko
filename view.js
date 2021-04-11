@@ -5,7 +5,7 @@ $('#sidepanel').append(efPanel);
 
 //create instructions div
 const instructions_div = document.createElement("div");
-var viewing_instructions = "Select a user and file or folder to view thier permissions";
+var viewing_instructions = "Select a user and filepath to view thier permissions";
 const instructions_text = document.createTextNode(viewing_instructions);
 instructions_div.appendChild(instructions_text);
 instructions_div.classList.add("imp-text");
@@ -13,7 +13,7 @@ $('#sidepanel').append(instructions_div);
 
 //create disclaimer div
 const disclaimer_div = document.createElement("div");
-var viewing_instructions = "(if nothings appears, user most likely does not have permissions for selected file/folder)";
+var viewing_instructions = "(if nothings appears, user most likely does not have permissions for selected filepath)";
 const disclaimer_text = document.createTextNode(viewing_instructions);
 disclaimer_div.appendChild(disclaimer_text);
 $('#sidepanel').append(disclaimer_div);
