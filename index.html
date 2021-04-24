@@ -178,21 +178,21 @@
               <ul id="advtabs_titles">
                 <li id="advtab_title_permissions">
                   <a href="#adv_permissions_tab" id="adv_permissions_tab_elem"
-                    >Edit Permissions</a
+                    >Permissions</a
                   >
                 </li>
                 <li id="advtab_title_owner">
                   <a href="#adv_owner_tab" id="adv_owner_tab_elem">Owner</a>
                 </li>
-                <!-- <li id="advtab_title_effective">
+                <li id="advtab_title_effective">
                   <a href="#adv_effective_tab" id="adv_effective_tab_elem"
-                    >Current Permissions in Effect</a
+                    >Effective Permissions</a
                   >
-                </li> -->
+                </li>
               </ul>
               <div id="adv_permissions_tab">
                 <div id="adv_perm_object_name" class="section">
-                  File Path: <span id="adv_perm_filepath"></span>
+                  Object Name: <span id="adv_perm_filepath"></span>
                 </div>
                 <div id="adv_perm_entries_text">Permission entries:</div>
                 <div
@@ -213,7 +213,7 @@
                   id="adv_perm_edit"
                   class="ui-button ui-widget ui-corner-all"
                 >
-                  Edit Permissions
+                  Edit...
                 </button>
                 <div id="adv_perm_inheritance_div">
                   <input
@@ -303,7 +303,7 @@
           <script id="config-script">
             const contexts = {
               add_full_permissions:
-                "The user <code>employee3</code> has recently been fired. Please remove this user entirely from the permission settings for <code>important_file.txt</code>.",
+                "The user <code>new_manager</code> has just joined the team as a manager. You need to give them complete access to the folder <code>presentation_documents</code>, including the ability to change permissions on that folder.",
               add_new_user:
                 "The user <code>employee4</code> has just joined the team. You need to give them access to the folder <code>presentation_documents</code>. Their new permissions should be the same as the other employees.",
               intern_permissions:
