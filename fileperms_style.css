@@ -37,6 +37,22 @@
 }
 
 .imp-text {
-  color: #003eff;
+  color: deeppink;
   font-weight: bold;
+  font-size: larger;
+}
+
+.imp-text2 {
+  color: rgb(160, 0, 85);
+  font-weight: bold;
+  font-size: large;
+}
+
+.refresh-text {
+  font-weight: bold;
+  color: mediumvioletred;
+}
+
+.permdialog_advanced_explain {
+  color: deeppink;
 }

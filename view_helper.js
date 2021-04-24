@@ -446,7 +446,7 @@ user_select_dialog = define_new_dialog('user_select_dialog2', 'Select User', {
             },
         },
         OK: {
-            text: "OK",
+            text: "Select User",
             id: "user_select_ok_button",
             click: function() {
                 // When "OK" is clicked, we want to populate some other element with the selected user name 
@@ -455,6 +455,17 @@ user_select_dialog = define_new_dialog('user_select_dialog2', 'Select User', {
                 let selected_value = all_users_selectlist.attr('selected_item') // what is the user name that was selected?
                 $(`#${to_populate_id}`).attr('selected_user', selected_value) // populate the element with the id
                 $( this ).dialog( "close" );
+                var newDialogue = define_new_dialog("user_saved", title='User Permissions Updated', options = {})
+                $('#user_saved').dialog("open");
+                console.log()
+                let dialogue_text = "Permissions for " + selected_value + " have been added successfully.";
+                $('#user_saved').html(dialogue_text);
+                $('#user_saved').dialog({
+                    closeText: "OK"
+                });
+
+
+
             }
         }
     }
@@ -512,11 +523,13 @@ function get_explanation_text(explanation, user_name, file_name, permission) {
     if ((explanation.file_responsible?get_full_path(explanation.file_responsible):'N/A') != 'N/A'){
         why = "becuase " + explanation.text_explanation;
     }
+
+    let to_edit = "To edit these permissions, click on the pencil icon next to the file/folder for which you would like to change permissions."
     
     if(explanation.is_allowed){
-        return "Currently <b>" + user_name + "</b> <mark>CAN</mark><b> <br>" + permission + "</b> for <b>" + file_name + "</b>";
+        return "Currently <b>" + user_name + "</b> <mark>CAN</mark><b> <br>" + permission + "</b> for <b>" + file_name + "</b> <br><br>" + to_edit;
     }else{
-        return "Currently <b>" + user_name + "</b> <mark>CANNOT</mark><b> <br>" + permission + "</b> for <b>" + file_name + "</b> becuase " + explanation.text_explanation;
+        return "Currently <b>" + user_name + "</b> <mark>CANNOT</mark><b> <br>" + permission + "</b> for <b>" + file_name + "</b> becuase " + explanation.text_explanation + "<br><br>" + to_edit;
     }
 }
 

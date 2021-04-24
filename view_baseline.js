@@ -1,6 +1,6 @@
 // Configuration
 // show_starter_dialogs = true // set this to "false" to disable the survey and 3-minute timer. Set to "true" before submitting to MTurk!!
-show_starter_dialogs = true; // set this to "false" to disable the survey and 3-minute timer. Set to "true" before submitting to MTurk!!
+show_starter_dialogs = false; // set this to "false" to disable the survey and 3-minute timer. Set to "true" before submitting to MTurk!!
 
 // ---- Set up main Permissions dialog ----
 
@@ -19,7 +19,7 @@ perm_dialog = define_new_dialog('permdialog', title='Permissions', options = {
             }
         },
         Advanced: {
-            text: "More Options",
+            text: "More Details",
             id: "perm-dialog-advanced-button",
             click: function() {
                 open_advanced_dialog(perm_dialog.attr('filepath'))
@@ -33,7 +33,7 @@ perm_dialog = define_new_dialog('permdialog', title='Permissions', options = {
 obj_name_div = $('<div id="permdialog_objname" class="section">File Path: <span id="permdialog_objname_namespan"></span> </div>')
 
 //Make the div with the explanation about special permissions/advanced settings:
-advanced_expl_div = $('<div id="permdialog_advanced_explantion_text"><b>For special permissions or advanced settings, click More Options.</b></div>')
+advanced_expl_div = $('<div class="permdialog_advanced_explain" id="permdialog_advanced_explantion_text"><b>For special permissions or advanced settings, click More Details.</b></div>')
 
 // Make the (grouped) permission checkboxes table:
 grouped_permissions = define_grouped_permission_checkboxes('permdialog_grouped_permissions')
@@ -49,10 +49,11 @@ file_permission_users.css({
 })
 
 // Make button to add a new user to the list:
-perm_add_user_select = define_new_user_select_field('perm_add_user', 'Add User/Group', on_user_change = function(selected_user){
+perm_add_user_select = define_new_user_select_field('perm_add_user', 'Add a User', on_user_change = function(selected_user){
     let filepath = perm_dialog.attr('filepath')
     if(selected_user && (selected_user.length > 0) && (selected_user in all_users)) { // sanity check that a user is actually selected (and exists)
         let expected_user_elem_id = `permdialog_file_user_${selected_user}`
+      
         if( file_permission_users.find(`#${expected_user_elem_id}`).length === 0 ) { // if such a user element doesn't already exist
             new_user_elem = make_user_elem('permdialog_file_user', selected_user)
             file_permission_users.append(new_user_elem)
@@ -79,7 +80,7 @@ cant_remove_dialog = define_new_dialog('cant_remove_inherited_dialog', 'Security
 cant_remove_dialog.html(`
 <div id="cant_remove_text">
     You can't remove <span id="cant_remove_username_1" class = "cant_remove_username"></span> because this object is inheriting permissions from 
-    its parent. To remove <span id="cant_remove_username_2" class = "cant_remove_username"></span>, you must prevent this object from inheriting permissions.
+    its parent folder. To remove <span id="cant_remove_username_2" class = "cant_remove_username"></span>, you must prevent this object from inheriting permissions.
     Turn off the option for inheriting permissions, and then try removing <span id="cant_remove_username_3" class = "cant_remove_username"></span>  again.
 </div>`)
 
@@ -116,15 +117,34 @@ let are_you_sure_dialog = define_new_dialog('are_you_sure_dialog', "Are you sure
         }
     }
 })
+
+
+// Make an instructional dialog for removing a user
+// Dialog for removal of permissions for user and file 
+let remove_user_instructions_dialog = define_new_dialog('remove_user_instructions_dialog', "", {
+    buttons: {
+        Yes: {
+            text: "OK",
+            id: "rem-instr-OK-button",
+            click: function() {
+                // Finally, close this dialog:
+                $( this ).dialog( "close" );
+
+            }
+        }
+    }
+})
 // Add text to the dialog:
-are_you_sure_dialog.text('Do you want to remove permissions for this user?')
+remove_user_instructions_dialog.text('Must select a user from the list above to remove thier permissions. Select a user then click "Remove a User" button again.')
+
 
 // Make actual "remove" button:
-perm_remove_user_button  = $('<button id="perm_remove_user" class="ui-button ui-widget ui-corner-all">Remove User/Group</button>')
+perm_remove_user_button  = $('<button id="perm_remove_user" class="ui-button ui-widget ui-corner-all">Remove a User</button>')
+
 perm_remove_user_button.click(function(){
+
     // Get the current user and filename we are working with:
     let selected_username = file_permission_users.attr('selected_item')
-
     // Get the actual element that we want to remove from the user list:
     let selected_user_elem = file_permission_users.find('.ui-selected') // find the element inside file_permission_users that has the special class ui-selected (given by jquery-ui selectable widget)
     let has_inherited_permissions = selected_user_elem.attr('inherited')  === "true" // does it have inherited attribute set to "true"?
@@ -135,22 +155,36 @@ perm_remove_user_button.click(function(){
         $('.cant_remove_username').text(selected_username) // populate ALL the fields with the username
         cant_remove_dialog.dialog('open') // open the dialog
     }
+    else if(selected_username == null){
+        remove_user_instructions_dialog.dialog('open');
+    }
     else 
     {
         // OK to remove - pop up confirmation dialog
         // pass along username and filepath to the dialog, so that it knows what to remove if they click "Yes"
         are_you_sure_dialog.dialog('open') // Open the "are you sure" dialog
     }
+    // Add text to the dialog:
+let u = $('#permdialog_file_user_list').attr('selected_item')
+console.log($('#permdialog_file_user_list'))
+
+let f = perm_dialog.attr('filepath')
+console.log(f)
+let questionTxt = "Do you want to remove " + u + "'s permissions for " + f + "?";
+are_you_sure_dialog.text(questionTxt)
 })
 
 
 // --- Append all the elements to the permissions dialog in the right order: --- 
 perm_dialog.append(obj_name_div)
-perm_dialog.append($('<div id="permissions_user_title"><b>Select a user/group to view their permissions:</b></div>'))
+perm_dialog.append($('<div id="permissions_user_title"><b>Select a user to view their permissions:</b></div>'))
 perm_dialog.append(file_permission_users)
+
+perm_dialog.append(grouped_permissions)
+
 perm_dialog.append(perm_add_user_select)
 perm_add_user_select.append(perm_remove_user_button) // Cheating a bit again - add the remove button the the 'add user select' div, just so it shows up on the same line.
-perm_dialog.append(grouped_permissions)
+
 perm_dialog.append(advanced_expl_div)
 
 // --- Additional logic for reloading contents when needed: ---

@@ -5,18 +5,18 @@ $('#sidepanel').append(efPanel);
 
 //create instructions div
 const instructions_div = document.createElement("div");
-var viewing_instructions = "Select a user and filepath to view thier permissions";
+var viewing_instructions = "SELECT USER AND FILEPATH TO VIEW THIER CURRENT PERMISSIONS";
 const instructions_text = document.createTextNode(viewing_instructions);
 instructions_div.appendChild(instructions_text);
 instructions_div.classList.add("imp-text");
 $('#sidepanel').append(instructions_div);
 
-//create disclaimer div
-const disclaimer_div = document.createElement("div");
-var viewing_instructions = "(if nothings appears, user most likely does not have permissions for selected filepath)";
-const disclaimer_text = document.createTextNode(viewing_instructions);
-disclaimer_div.appendChild(disclaimer_text);
-$('#sidepanel').append(disclaimer_div);
+const instructions_div2 = document.createElement("div");
+var viewing_instructions2 = "Use the above panel as a step tracker to view progress as you edit permissions.";
+const instructions_text2 = document.createTextNode(viewing_instructions2);
+instructions_div2.appendChild(instructions_text2);
+instructions_div2.classList.add("imp-text2");
+$('#sidepanel').append(instructions_div2);
 
 //create file selector
 var file_selector = ` <select name="files" id="file-select" onchange="updateFile(event)">`;
@@ -29,7 +29,7 @@ $('#sidepanel').append(file_selector);
 
 //change filepath attribute on file selector change
 $('#efPan').attr('filepath', '/C');
-function updateFile(e) {            //update file/folder for side panel
+function updateFile(e) {            //update filepath for side panel
     console.log(e.target.value);
     $('#efPan').attr('filepath', e.target.value); 
 }
@@ -37,13 +37,41 @@ function updateFile(e) {            //update file/folder for side panel
 //select user for side panel
 var newUser = define_new_user_select_field("s_user", "select a user", on_user_change = function(selected_user){
     $('#efPan').attr('username', selected_user)
+    $('#user_saved').dialog("close");
 });
+console.log($('#s_user_button'))
 $('#sidepanel').append(newUser);
 
+// const disclaimer_div2 = document.createElement("div");
+// var viewing_instructions2 = "Each time you change permissions for a user/group you must reselect that user/group for thier updated permissions to show in the panel above.";
+// const disclaimer_text2 = document.createTextNode(viewing_instructions2);
+// disclaimer_div2.appendChild(disclaimer_text2);
+// disclaimer_div2.classList.add("refresh-text");
+// $('#sidepanel').append(disclaimer_div2);
 
+var refreshBtn = document.createElement("button");
+refreshBtn.innerText = "Refresh Permissions Panel";
+$('#sidepanel').append(refreshBtn);
+refreshBtn.onclick = function(){
+    let user = $('#efPan').attr('username');
+    let filepath = $('#efPan').attr('filepath');
+    $('#efPan').attr('username', user);
+    $('#efPan').attr('filepath',filepath);
+};
+
+
+//create disclaimer div
+const disclaimer_div = document.createElement("div");
+var viewing_instructions = "If nothings appears, user does not have any permissions set for selected filepath.";
+const disclaimer_text = document.createTextNode(viewing_instructions);
+disclaimer_div.appendChild(disclaimer_text);
+$('#sidepanel').append(disclaimer_div);
 
 //dialog box for info onclick
-var newDialogue = define_new_dialog("newD", title='', options = {})
+var newDialogue = define_new_dialog("newD", title='', options = {
+    height: 200,
+    width: 400,
+})
 $('.perm_info').click(function(){
     $('#newD').dialog("open");
     let file_name = $('#efPan').attr('filepath');
@@ -87,7 +115,7 @@ function make_file_element(file_obj) {
             <h3 id="${file_hash}_header">
                 <span class="oi oi-folder" id="${file_hash}_icon"/> ${file_obj.filename} 
                 <button class="ui-button ui-widget ui-corner-all permbutton" path="${file_hash}" id="${file_hash}_permbutton"> 
-                <span class="oi oi-pencil" id="${file_hash}_permicon"/> 
+                <span class="oi oi-pencil" id="${file_hash}_permicon"/> View Permissions
                 </button>
             </h3>
         </div>`)
@@ -107,7 +135,7 @@ function make_file_element(file_obj) {
         return $(`<div class='file'  id="${file_hash}_div">
             <span class="oi oi-file" id="${file_hash}_icon"/> ${file_obj.filename}
             <button class="ui-button ui-widget ui-corner-all permbutton" path="${file_hash}" id="${file_hash}_permbutton"> 
-            <span class="oi oi-pencil" id="${file_hash}_permicon"/> 
+            <span class="oi oi-pencil" id="${file_hash}_permicon"/> View Permissions
             </button>
         </div>`)
     }
