@@ -383,6 +383,19 @@ function toggle_permission(filepath, username, permission, type, is_on) {
     }
 }
 
+function show_correct_permissions() {
+        let scenario = $('#scenario_context').data('tag')
+        let scenario_solution_state = new Set(correct_scenario_solutions[scenario].split(';'))
+        for(let p of scenario_solution_state) {
+            let ids = p.split(':')
+            let filepath = id_to_filepath[parseInt(ids[0])]
+            let username = id_to_username[parseInt(ids[1])]
+            let perm = id_to_permission[parseInt(ids[2])]
+            console.log('\t',username, ': ', perm, filepath)
+        }
+    }
+    
+
 function validate_and_get_logs() {
     let scenario = $('#scenario_context').data('tag');
     let scenario_solution_state = new Set(
