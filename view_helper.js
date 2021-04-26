@@ -458,7 +458,7 @@ user_select_dialog = define_new_dialog('user_select_dialog2', 'Select User', {
                 var newDialogue = define_new_dialog("user_saved", title='User Permissions Updated', options = {})
                 $('#user_saved').dialog("open");
                 console.log()
-                let dialogue_text = "Permissions for " + selected_value + " have been added successfully.";
+                let dialogue_text = selected_value + " has been added successfully.";
                 $('#user_saved').html(dialogue_text);
                 $('#user_saved').dialog({
                     closeText: "OK"
@@ -524,7 +524,7 @@ function get_explanation_text(explanation, user_name, file_name, permission) {
         why = "becuase " + explanation.text_explanation;
     }
 
-    let to_edit = "To edit these permissions, click on the pencil icon next to the file/folder for which you would like to change permissions."
+    let to_edit = "To edit these permissions, click on 'View Permissions' next to the file/folder for which you would like to change permissions."
     
     if(explanation.is_allowed){
         return "Currently <b>" + user_name + "</b> <mark>CAN</mark><b> <br>" + permission + "</b> for <b>" + file_name + "</b> <br><br>" + to_edit;

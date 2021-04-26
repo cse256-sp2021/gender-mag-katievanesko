@@ -42,13 +42,6 @@ var newUser = define_new_user_select_field("s_user", "select a user", on_user_ch
 console.log($('#s_user_button'))
 $('#sidepanel').append(newUser);
 
-// const disclaimer_div2 = document.createElement("div");
-// var viewing_instructions2 = "Each time you change permissions for a user/group you must reselect that user/group for thier updated permissions to show in the panel above.";
-// const disclaimer_text2 = document.createTextNode(viewing_instructions2);
-// disclaimer_div2.appendChild(disclaimer_text2);
-// disclaimer_div2.classList.add("refresh-text");
-// $('#sidepanel').append(disclaimer_div2);
-
 var refreshBtn = document.createElement("button");
 refreshBtn.innerText = "Refresh Permissions Panel";
 $('#sidepanel').append(refreshBtn);
@@ -62,7 +55,7 @@ refreshBtn.onclick = function(){
 
 //create disclaimer div
 const disclaimer_div = document.createElement("div");
-var viewing_instructions = "If nothings appears, user does not have any permissions set for selected filepath.";
+var viewing_instructions = "If nothings appears, user does not have any permissions set for selected filepath. This function does not work for groups since members within groups may have different permissions.";
 const disclaimer_text = document.createTextNode(viewing_instructions);
 disclaimer_div.appendChild(disclaimer_text);
 $('#sidepanel').append(disclaimer_div);
@@ -115,7 +108,7 @@ function make_file_element(file_obj) {
             <h3 id="${file_hash}_header">
                 <span class="oi oi-folder" id="${file_hash}_icon"/> ${file_obj.filename} 
                 <button class="ui-button ui-widget ui-corner-all permbutton" path="${file_hash}" id="${file_hash}_permbutton"> 
-                <span class="oi oi-pencil" id="${file_hash}_permicon"/> View Permissions
+                View Permissions
                 </button>
             </h3>
         </div>`)
@@ -135,7 +128,7 @@ function make_file_element(file_obj) {
         return $(`<div class='file'  id="${file_hash}_div">
             <span class="oi oi-file" id="${file_hash}_icon"/> ${file_obj.filename}
             <button class="ui-button ui-widget ui-corner-all permbutton" path="${file_hash}" id="${file_hash}_permbutton"> 
-            <span class="oi oi-pencil" id="${file_hash}_permicon"/> View Permissions
+             View Permissions
             </button>
         </div>`)
     }

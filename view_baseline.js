@@ -1,6 +1,6 @@
 // Configuration
-// show_starter_dialogs = true // set this to "false" to disable the survey and 3-minute timer. Set to "true" before submitting to MTurk!!
-show_starter_dialogs = false; // set this to "false" to disable the survey and 3-minute timer. Set to "true" before submitting to MTurk!!
+show_starter_dialogs = true // set this to "false" to disable the survey and 3-minute timer. Set to "true" before submitting to MTurk!!
+// show_starter_dialogs = false; // set this to "false" to disable the survey and 3-minute timer. Set to "true" before submitting to MTurk!!
 
 // ---- Set up main Permissions dialog ----
 
@@ -33,7 +33,7 @@ perm_dialog = define_new_dialog('permdialog', title='Permissions', options = {
 obj_name_div = $('<div id="permdialog_objname" class="section">File Path: <span id="permdialog_objname_namespan"></span> </div>')
 
 //Make the div with the explanation about special permissions/advanced settings:
-advanced_expl_div = $('<div class="permdialog_advanced_explain" id="permdialog_advanced_explantion_text"><b>For special permissions or advanced settings, click More Details.</b></div>')
+advanced_expl_div = $('<div class="permdialog_advanced_explain" id="permdialog_advanced_explantion_text"><b>For more detailed permissions or inheritance settings, click More Details.</b></div>')
 
 // Make the (grouped) permission checkboxes table:
 grouped_permissions = define_grouped_permission_checkboxes('permdialog_grouped_permissions')
@@ -77,11 +77,18 @@ cant_remove_dialog = define_new_dialog('cant_remove_inherited_dialog', 'Security
         }
     }
 })
+// cant_remove_dialog.html(`
+// <div id="cant_remove_text">
+//     You can't remove <span id="cant_remove_username_1" class = "cant_remove_username"></span> because this user is inheriting permissions from 
+//     its parent folder. To remove <span id="cant_remove_username_2" class = "cant_remove_username"></span>, you must prevent this user from inheriting permissions.
+//     Turn off the option for inheriting permissions, and then try removing <span id="cant_remove_username_3" class = "cant_remove_username"></span>  again. 
+// </div>`)
+
 cant_remove_dialog.html(`
 <div id="cant_remove_text">
-    You can't remove <span id="cant_remove_username_1" class = "cant_remove_username"></span> because this object is inheriting permissions from 
-    its parent folder. To remove <span id="cant_remove_username_2" class = "cant_remove_username"></span>, you must prevent this object from inheriting permissions.
-    Turn off the option for inheriting permissions, and then try removing <span id="cant_remove_username_3" class = "cant_remove_username"></span>  again.
+    You can't remove <span id="cant_remove_username_1" class = "cant_remove_username"></span> because this user is inheriting permissions from 
+    its parent folder. <br><br>
+    <b> Denying all permissions for <span id="cant_remove_username_1" class = "cant_remove_username"></span> in this file/folder is equivalent to removing them entirely. </b>
 </div>`)
 
 // Make a confirmation "are you sure you want to remove?" dialog
@@ -278,7 +285,7 @@ function open_advanced_dialog(file_path) {
     })
     $('#info-circle-include-inherit-parent').click(function(){
         $('#dIP').dialog("open");
-        $('#dIP').html("Clicking the checkbox to the left will open a dialog box where further instructions will be given. Clicking the checkbox will not automatically change any permissions.");
+        $('#dIP').html("<b>Checking</b> the checkbox will change all permissions for this file to be the same as those for its parent folder. <br><br> <b>Un-checking</b> the checkbox to the left will open a dialog box where further instructions will be given. Clicking the checkbox will not automatically change any permissions.");
         $('#dIP').dialog({
             closeText: "Close"
         });
@@ -290,7 +297,7 @@ function open_advanced_dialog(file_path) {
     })
     $('#info-circle-replace-all-child').click(function(){
         $('#dRC').dialog("open");
-        $('#dRC').html("Clicking this checkbox will replace all permissions for any child files or folders with the exact same permissions as in this folder.");
+        $('#dRC').html("Clicking this checkbox will replace all permissions for any child files or folders with the exact same permissions as in this folder. Note this action can be un-done at any time by un-checking the checkbox.");
         $('#dRC').dialog({
             closeText: "Close"
         });
