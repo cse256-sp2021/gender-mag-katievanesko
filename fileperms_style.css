@@ -56,3 +56,9 @@
 .permdialog_advanced_explain {
   color: deeppink;
 }
+
+#instr {
+  color: rgb(175, 45, 73);
+  font-weight: bold;
+  font-size: larger;
+}
